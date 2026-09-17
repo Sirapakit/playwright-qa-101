@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>QA Demo Shop - Products</title>
+<style>
+  body { font-family: sans-serif; max-width: 600px; margin: 40px auto; }
+  header { display: flex; justify-content: space-between; align-items: center; }
+  .cart { position: relative; font-size: 20px; }
+  #cart-badge {
+    position: absolute; top: -8px; right: -14px; background: #c00; color: #fff;
+    border-radius: 50%; width: 20px; height: 20px; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .product { border: 1px solid #ddd; border-radius: 6px; padding: 16px; margin-top: 16px; }
+  .product h3 { margin: 0 0 8px; }
+  .product button { padding: 8px 14px; cursor: pointer; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Products</h1>
+    <div class="cart">🛒<span id="cart-badge">0</span></div>
+  </header>
+
+  <div class="product">
+    <h3>Playwright Sticker Pack</h3>
+    <p>ราคา 99 บาท</p>
+    <button data-product="sticker">Add to cart</button>
+  </div>
+
+  <div class="product">
+    <h3>QA Mug</h3>
+    <p>ราคา 199 บาท</p>
+    <button data-product="mug">Add to cart</button>
+  </div>
+
+  <div class="product">
+    <h3>Bug-Free T-Shirt</h3>
+    <p>ราคา 299 บาท</p>
+    <button data-product="tshirt">Add to cart</button>
+  </div>
+
+  <script>
+    let count = 0;
+    const badge = document.getElementById('cart-badge');
+    document.querySelectorAll('.product button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        count += 1;
+        badge.textContent = String(count);
+      });
+    });
+  </script>
+</body>
+</html>

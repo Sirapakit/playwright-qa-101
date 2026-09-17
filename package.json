@@ -1,0 +1,18 @@
+{
+  "name": "playwright-demo",
+  "version": "1.0.0",
+  "description": "โปรเจกต์ demo สำหรับสอน Playwright ให้ Manual QA",
+  "main": "index.js",
+  "scripts": {
+    "start": "printf '\\n  Demo site: http://localhost:5173/login.html\\n\\n' && python3 -m http.server 5173 --directory demo-site",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "codegen": "playwright codegen http://localhost:5173/login.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  }
+}

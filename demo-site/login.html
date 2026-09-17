@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <title>QA Demo Shop - Login</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 360px;
+      margin: 80px auto;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 16px;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    #error-message {
+      color: #c00;
+      margin-top: 12px;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Tony Demo Shop</h1>
+  <form id="login-form">
+    <label for="username">Username</label>
+    <input id="username" name="username" type="text" placeholder="Username" autocomplete="off">
+
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" placeholder="Password" autocomplete="off">
+
+    <button type="submit">Login</button>
+    <p id="error-message">Username หรือ Password ไม่ถูกต้อง</p>
+  </form>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const errorEl = document.getElementById('error-message');
+      if (username === 'qa_user' && password === 'test1234') {
+        errorEl.style.display = 'none';
+        window.location.href = 'products.html';
+      } else {
+        errorEl.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+
+</html>
