@@ -149,6 +149,59 @@ Always run what you get back and read it line by line. AI is good at the boilerp
 
 ---
 
+## 8. Playwright MCP — letting the AI drive the browser
+
+In step 7 the AI is guessing from code it can read. **Playwright MCP** goes further: it gives your
+AI assistant a real browser it can open, click and read for itself. So instead of guessing a
+locator, it looks at the actual page and uses what's really there.
+
+MCP (Model Context Protocol) is just the standard that lets a tool plug into an AI assistant.
+Playwright ships one, so the assistant gets browser tools: navigate, click, type, screenshot,
+read the page.
+
+### Setting it up
+
+This project already includes a `.mcp.json`, so opening the folder in Claude Code will offer to
+enable the server — approve it once and you're done. To add it by hand instead:
+
+```
+claude mcp add playwright npx @playwright/mcp@latest
+```
+
+Check it worked by typing `/mcp` — you should see `playwright` listed as connected. The browser
+downloads itself the first time it runs.
+
+### Try it
+
+Start the demo site first (`npm run start`), then ask in plain language:
+
+> "Open http://localhost:5173/login.html and tell me what's on the page."
+
+> "Log in as qa_user / test1234, add the first product to the cart, and check the badge."
+
+> "Now write that as a Playwright test in tests/mcp-demo.spec.js and run it until it passes."
+
+Watch what comes back from the first prompt: the page is described as **roles and names** —
+button "Login", textbox "Username". That is exactly what `getByRole` matches, which is why
+role-based locators are the ones we recommend. The AI sees the page the same way a screen
+reader does.
+
+### Where it fits — and where it doesn't
+
+MCP is for **exploring and drafting**. It is slow, costs tokens, and won't give identical results
+every run, so it is the wrong tool for your CI pipeline. What ships is the reviewed `.spec.js`
+file it helped you write — that part runs in seconds and behaves the same way every time.
+
+Two habits worth keeping:
+
+- **Read every generated test before trusting it.** A test that passes for the wrong reason is
+  worse than no test — like [tests/first-test.spec.js](tests/first-test.spec.js) in this project,
+  which has no assertion at all and therefore can never fail.
+- **Don't point MCP at production** or anything holding real customer data. Use a local site like
+  this one, or a staging environment.
+
+---
+
 ## Command cheat sheet
 
 | Command | What it does |
@@ -159,6 +212,7 @@ Always run what you get back and read it line by line. AI is good at the boilerp
 | `npm test` | Run all tests in the terminal |
 | `npm run test:ui` | Run tests in the visual UI mode |
 | `npm run codegen` | Record your clicks as test code |
+| `npx playwright test --project=chrome` | Run on real Google Chrome instead of bundled Chromium |
 
 ## What's in this project
 
@@ -169,7 +223,8 @@ playwright-demo/
 │   ├── 00-commands-tour.spec.js     the basic commands, one per test
 │   ├── login.spec.js                a full example scenario
 │   └── exercise.spec.js             your exercise + solution at the bottom
-├── playwright.config.js             Playwright settings (base URL, browser, auto-start server)
+├── playwright.config.js             Playwright settings (base URL, browsers, auto-start server)
+├── .mcp.json                        Playwright MCP setup for Claude Code (section 8)
 └── package.json                     the npm commands above
 ```
 

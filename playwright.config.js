@@ -21,6 +21,12 @@ module.exports = defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    // Google Chrome ตัวจริงที่ติดตั้งในเครื่อง (ไม่ใช่ Chromium ที่ Playwright โหลดมา)
+    // เรียกใช้ด้วย: npx playwright test --project=chrome
+    {
+      name: 'chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    },
   ],
   // เปิดเว็บ demo local อัตโนมัติก่อนรันเทสต์ ไม่ต้องพึ่งอินเทอร์เน็ตตอนสอน
   webServer: {

@@ -55,6 +55,30 @@ npm run codegen
 **ขั้น 5 — AI-assisted test writing**
 โชว์ตัวอย่างการอธิบาย scenario เป็นภาษาคนให้ Claude ช่วยเขียน/แก้ test case
 
+**ขั้น 6 — Playwright MCP (ให้ AI คุมเบราว์เซอร์เองได้)**
+
+ต่างกับขั้น 5 ตรงที่ขั้น 5 Claude *เดา* จากโค้ดที่เราให้ดู แต่ MCP ทำให้ Claude **เปิดเบราว์เซอร์จริง
+แล้วไปดูหน้าเว็บเองได้** ก่อนเขียนเทสต์ — locator ที่ได้เลยตรงกับของจริง ไม่มั่ว
+
+โปรเจกต์นี้ใส่ `.mcp.json` ไว้ให้แล้ว เปิดโปรเจกต์ใน Claude Code มันจะถามว่าจะเปิดใช้ server ไหม
+ตอบ yes ครั้งเดียวจบ (ถ้าอยากสั่งเองใช้ `claude mcp add playwright npx @playwright/mcp@latest`)
+
+เช็คว่าติดแล้วด้วย `/mcp` ต้องเห็น `playwright` เป็น connected
+
+สคริปต์ที่แนะนำให้โชว์สด (เปิด `npm run start` ค้างไว้ก่อน):
+
+1. *"เปิด http://localhost:5173/login.html แล้วบอกหน่อยว่าหน้านี้มี element อะไรบ้าง"*
+   → Claude เปิด browser จริงแล้วสรุป accessibility tree ให้ดู ชี้ให้เห็นว่ามันอ่านเป็น **role + name**
+   แบบเดียวกับที่เราสอน `getByRole` ไปตอนขั้น 2 เป๊ะๆ
+2. *"login ด้วย qa_user / test1234 แล้วเพิ่มสินค้าชิ้นแรกลงตะกร้า"*
+   → ให้ห้องดูมันคลิกจริงทีละสเต็ป
+3. *"เขียนเป็น Playwright test ลง tests/mcp-demo.spec.js แล้วรันให้ผ่าน"*
+   → จบด้วยไฟล์เทสต์ที่รันผ่านจริง
+
+**จุดที่ต้องย้ำกับผู้เรียน:** MCP ใช้ตอน*สำรวจ*กับ*ร่าง* แต่ของที่เอาขึ้น CI คือไฟล์ `.spec.js`
+ที่เรารีวิวแล้ว — ไม่ใช่ปล่อยให้ AI คลิกเว็บทุกรอบที่ deploy (ช้า แพง และไม่ deterministic)
+และอย่าชี้ MCP ไปที่ production ที่มีข้อมูลลูกค้าจริง
+
 ## โครงสร้างไฟล์
 ```
 playwright-demo/
@@ -64,5 +88,6 @@ playwright-demo/
 │   ├── login.spec.js              ตัวอย่าง scenario เต็ม (ผ่านทั้งหมด)
 │   └── exercise.spec.js           โจทย์ hands-on + เฉลย (คอมเมนต์ท้ายไฟล์)
 ├── playwright.config.js
+├── .mcp.json          ตั้งค่า Playwright MCP ให้ Claude Code (ใช้ในขั้น 6)
 └── package.json
 ```
